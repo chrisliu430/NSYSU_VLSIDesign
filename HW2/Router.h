@@ -20,9 +20,16 @@ SC_MODULE( Router ) {
 	sc_lv<FLIT_LENGTH> temp;
 
 	int northEn, westEn, southEn, eastEn, localEn;
+	bool sendData, tempEn;
+	bool northC, westC, southC, eastC;
 
 	void Reset();
-	void TransPacket();
+	void ReceiveNorthPacket();
+	void ReceiveWestPacket();
+	void ReceiveSouthPacket();
+	void ReceiveEastPacket();
+	void ShowReceivePacket();
+	void ShowPacketInMemory();
 	void TransPacketToNorth();
 	void TransPacketToWest();
 	void TransPacketToSouth();
@@ -31,13 +38,24 @@ SC_MODULE( Router ) {
 	void TransToLocal();
 	void ReceiveSignal();
 	void ReceiveLocalPacket();
+	void ClearSendPacket();
 
 	//----------------------vvvvv put your code here vvvvv------------------------------
     SC_CTOR( Router ) {
 		SC_METHOD(Reset);
 		sensitive << reset.pos();
-		SC_METHOD(TransPacket);
+		SC_METHOD(ReceiveNorthPacket);
+		sensitive << North_in;
+		SC_METHOD(ReceiveWestPacket);
+		sensitive << West_in;
+		SC_METHOD(ReceiveSouthPacket);
+		sensitive << South_in;
+		SC_METHOD(ReceiveEastPacket);
+		sensitive << East_in;
+		SC_METHOD(ShowReceivePacket);
 		sensitive << North_in << West_in << South_in << East_in;
+		SC_METHOD(ShowPacketInMemory);
+		sensitive << clk.pos();
 		SC_METHOD(TransFlag);
 		sensitive << clk.pos();
 		SC_METHOD(TransToLocal);
@@ -53,6 +71,8 @@ SC_MODULE( Router ) {
 		SC_METHOD(TransPacketToSouth);
 		sensitive << clk.pos();
 		SC_METHOD(TransPacketToEast);
+		sensitive << clk.pos();
+		SC_METHOD(ClearSendPacket);
 		sensitive << clk.pos();
     }
 	//----------------------^^^^^ put your code here ^^^^^------------------------------

@@ -37,7 +37,7 @@ SC_MODULE( Processing_Element ) {
 		SC_METHOD(PartialSum);
 		sensitive << clk.pos();
 		SC_METHOD(ReqToNI);
-		sensitive << sumCount;
+		sensitive << clk.pos();
 		SC_METHOD(AckFromNI);
 		sensitive << PE_ack_out;
     }

@@ -24,7 +24,7 @@ void Processing_Element::ReceiveData() {
 
 void Processing_Element::PartialSum() {
     if (dataCount >= 4) {
-        sumBuffer[sumCount] = dataBuffer[0] * dataBuffer[1] + dataBuffer[2] * dataBuffer[3];
+        sumBuffer[sumCount] = (sc_lv<DATA_LENGTH>)((sc_int<DATA_LENGTH>)dataBuffer[0] * (sc_int<DATA_LENGTH>)dataBuffer[1] + (sc_int<DATA_LENGTH>)dataBuffer[2] * (sc_int<DATA_LENGTH>)dataBuffer[3]);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 7; j++) {
                 dataBuffer[j] = dataBuffer[j + 1];
@@ -36,7 +36,9 @@ void Processing_Element::PartialSum() {
 }
 
 void Processing_Element::ReqToNI() {
-    PE_req_out = 1;
+    if (sumCount != 0) {
+        PE_req_out = 1;
+    }
 }
 
 void Processing_Element::AckFromNI() {
